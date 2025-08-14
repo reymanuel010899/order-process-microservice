@@ -1,6 +1,5 @@
-from services.order_service import OrderService
-from fastapi import JsonResponse
-
+from services.order_services import OrderService
+from fastapi.responses import JSONResponse
 # order_services = OrderService()
 
 # controller/order_controller.py
@@ -10,14 +9,15 @@ class OrderController:
 
     def create_order(self, order_data: dict):
         try:
+            print("Creating order with data:--------------", order_data)
             return self.order_service.create_order(order_data)
         except ValueError as e:
-            return JsonResponse(
+            return JSONResponse(
                 {"error": str(e)},
                 status=400
             )
         except Exception as e:
-            return JsonResponse(
+            return JSONResponse(
                 {"error": f"An unexpected error occurred. {str(e)}"},
                 status=500
             )

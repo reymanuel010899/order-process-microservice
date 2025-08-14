@@ -1,20 +1,21 @@
+from controller import order_controller
 from fastapi import APIRouter, HTTPException
+from model import order
 from model.order import Order
 from model.database import orders_collection
 from typing import List
-
+from controller.order_controller import OrderController
+# orders_collection = orders_collection()
+order_controller = OrderController()
 router = APIRouter()
 
 # Crear un pedido
 @router.post("/create", response_model=Order)
-async def create_order(order: Order):
-    existing_order = await orders_collection.find_one({"order_id": order.order_id})
-    if existing_order:
-        raise HTTPException(status_code=400, detail="Order ID already exists")
-    
-    order_dict = order.model_dump()
-    await orders_collection.insert_one(order_dict)
-    return order
+async def create_order(order_data: Order):
+    print("Creating order with data:", order)
+    new_order_dict = await order_controller.create_order(order_data)
+    return Order(**new_order_dict)
+  
 
 # get all orders
 @router.get("/get-all", response_model=List[Order])
