@@ -10,14 +10,14 @@ class OrderItem(BaseModel):
     price: float
 
 class Order(BaseModel):
-    order_id: int
+    order_id: int = Field(default_factory=lambda: uuid.uuid4().int >> 64, read_only=True)
     customer_name: str
     customer_email: str
     customer_address: str
     items: List[OrderItem]
     total_price: float
-    status: str = "pending"  # pending, shipped, delivered, cancelled
-    payment_method: str  # e.g., "credit_card", "paypal"
+    status: str = "pending" 
+    payment_method: str  
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = None
     uuid: str = Field(default_factory=lambda: str(uuid.uuid4()))

@@ -1,5 +1,6 @@
 from model.database import orders_collection
 from datetime import datetime
+import uuid
 
 class OrderService:
     def __init__(self):
@@ -14,6 +15,7 @@ class OrderService:
             }
     
         order_dict = order_data.dict()
+        order_dict["uuid"] = str(uuid.uuid4())
         self.order_collection.insert_one(order_dict)
         return order_dict
 
