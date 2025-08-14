@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import config
 from model.database import db
-from route.orders.order_routes import router as order_router
+from route.orders import router as order_router
 
 app = FastAPI(
     title="Order Process API",
@@ -10,7 +10,7 @@ app = FastAPI(
     version="1.0.0",
     contact={
         "name": "Rey Manuel",
-        "email": "rey@example.com",
+        "email": "reymanuelferrera78@gmail.com",
     },
     docs_url="/docs",
     redoc_url="/redoc"
@@ -19,13 +19,12 @@ app = FastAPI(
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=config.origins,  # Dominios permitidos
+    allow_origins=config.origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Métodos permitidos
-    allow_headers=["*"],  # Encabezados permitidos
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
-# Incluir las rutas de órdenes
 app.include_router(
     order_router,
     prefix="/orders",
@@ -42,6 +41,5 @@ def health_check():
 
 @app.on_event("startup")
 async def startup_db_client():
-    print("********")
     coleccion = db["orders"]
-    print("📦 Conexión a MongoDB iniciada.", coleccion)
+    print("📦 Connection to MongoDB initiated.", coleccion)

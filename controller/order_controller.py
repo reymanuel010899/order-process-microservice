@@ -1,32 +1,72 @@
-from services.order_services import OrderService
+from model.order import Order
+from services import OrderService
 from fastapi.responses import JSONResponse
-# order_services = OrderService()
 
-# controller/order_controller.py
+
 class OrderController:
     def __init__(self):
         self.order_service = OrderService()
 
-    def create_order(self, order_data: dict):
+    async def create_order(self, order_data: dict):
         try:
-            print("Creating order with data:--------------", order_data)
-            return self.order_service.create_order(order_data)
+            new_order = await self.order_service.create_order(order_data)
+            if "error" in new_order:
+                return JSONResponse(
+                    content=new_order,
+                    status_code=new_order.get("status_code", 500)
+                )
+            return new_order
         except ValueError as e:
             return JSONResponse(
-                {"error": str(e)},
-                status=400
+                content={"error": str(e)},
+                status_code=400
             )
         except Exception as e:
             return JSONResponse(
-                {"error": f"An unexpected error occurred. {str(e)}"},
-                status=500
+                content={"error": f"An unexpected error occurred. {str(e)}"},
+                status_code=500
+            )
+    async def get_order(self, order_id: int):
+        try:
+            order = await self.order_service.get_order(order_id)
+            if "error" in order:
+                return JSONResponse(
+                    content=order,
+                    status_code=order.get("status_code", 500)
+                )
+            return order
+        except ValueError as e:
+            return JSONResponse(
+                content={"error": str(e)},
+                status_code=400
+            )
+        except Exception as e:
+            return JSONResponse(
+                content={"error": f"An unexpected error occurred. {str(e)}"},
+                status_code=500
             )
 
-    def get_order(self, order_id):
-        return self.order_service.get_order(order_id)
+    
+    async def update_order(self, order_id, order_data: Order):
+        try:
+            order = await self.order_service.update_order(order_id, order_data)
+            if "error" in order:
+                return JSONResponse(
+                    content=order,
+                    status_code=order.get("status_code", 500)
+                )
+            return order
+        except ValueError as e:
+            return JSONResponse(
+                content={"error": str(e)},
+                status_code=400
+            )
+        except Exception as e:
+            return JSONResponse(
+                content={"error": f"An unexpected error occurred. {str(e)}"},
+                status_code=500
+            )
 
-    def update_order(self, order_id, order_data):
-        return self.order_service.update_order(order_id, order_data)
-
+      
     def delete_order(self, order_id):
         return self.order_service.delete_order(order_id)
