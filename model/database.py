@@ -9,3 +9,6 @@ DB_NAME = os.getenv("DB_NAME", "order_service")
 
 client = AsyncIOMotorClient(MONGODB_URI)
 db = client[DB_NAME]
+
+# Collection for orders
+orders_collection = db["orders"]

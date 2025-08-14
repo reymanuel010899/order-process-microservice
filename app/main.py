@@ -3,14 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from config import config
 from model.database import db
 from route.orders.order_routes import router as order_router
-app = FastAPI()
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=config.origins,  # Dominios permitidos
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Métodos permitidos
-#     allow_headers=["*"],  # Encabezados permitidos
-# )
 
 app = FastAPI(
     title="Order Process API",
@@ -19,23 +11,37 @@ app = FastAPI(
     contact={
         "name": "Rey Manuel",
         "email": "rey@example.com",
-    }
+    },
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
 
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=config.origins,  # Dominios permitidos
+    allow_credentials=True,
+    allow_methods=["*"],  # Métodos permitidos
+    allow_headers=["*"],  # Encabezados permitidos
+)
+
+# Incluir las rutas de órdenes
 app.include_router(
     order_router,
     prefix="/orders",
-    tags=["orders"]
+    tags=["Orders Management"]
 )
-@app.get("/")
-def read_root():
-    return {"message": "successful health check-up 🚀"}
 
+@app.get("/", tags=["Health Check"])
+def read_root():
+    return {"message": "successful health check-up 🚀", "status": "running"}
+
+@app.get("/health", tags=["Health Check"])
+def health_check():
+    return {"status": "healthy", "service": "order-process-microservice"}
 
 @app.on_event("startup")
 async def startup_db_client():
     print("********")
-    coleccion = db["mi_coleccion"]
-   
-
-    print("📦 Conexión a MongoDB iniciada.", coleccion )
+    coleccion = db["orders"]
+    print("📦 Conexión a MongoDB iniciada.", coleccion)
