@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
+import uuid
 
 class OrderItem(BaseModel):
     product_id: str
@@ -19,3 +20,4 @@ class Order(BaseModel):
     payment_method: str  # e.g., "credit_card", "paypal"
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = None
+    uuid: str = Field(default_factory=lambda: str(uuid.uuid4()))
