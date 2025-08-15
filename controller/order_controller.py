@@ -9,7 +9,7 @@ class OrderController:
 
     async def create_order(self, order_data: dict):
         try:
-            new_order = await self.order_service.create_order(order_data)
+            new_order =  await self.order_service.create_order(order_data)
             if "error" in new_order:
                 return JSONResponse(
                     content=new_order,
@@ -66,7 +66,3 @@ class OrderController:
                 content={"error": f"An unexpected error occurred. {str(e)}"},
                 status_code=500
             )
-
-      
-    def delete_order(self, order_id):
-        return self.order_service.delete_order(order_id)

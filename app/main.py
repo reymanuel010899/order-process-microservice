@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import config
 from model.database import db
-from route.orders import router as order_router
+from router.orders import router as order_router
 
 app = FastAPI(
     title="Order Process API",
@@ -16,7 +16,6 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Configurar CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.origins,
