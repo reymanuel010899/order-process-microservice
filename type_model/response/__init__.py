@@ -1,4 +1,3 @@
-from datetime import datetime
 from pydantic import BaseModel
 from typing import List
 
@@ -9,7 +8,7 @@ class OrderItem(BaseModel):
     quantity: int
     price: float
 
-class OrderCreateRequest(BaseModel):
+class OrderRequest(BaseModel):
     customer_name: str
     customer_email: str
     customer_address: str
