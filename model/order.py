@@ -16,7 +16,7 @@ class Order(BaseModel):
     customer_address: str
     items: List[OrderItem]
     total_price: float
-    status: str = "pending" 
+    status: str = "create" 
     payment_method: str  
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = None
