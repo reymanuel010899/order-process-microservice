@@ -1,19 +1,14 @@
 from model.database import orders_collection
 from datetime import datetime
+import uuid
 
 class OrderService:
     def __init__(self):
         self.order_collection = orders_collection
 
     async def create_order(self, order_data: dict):
-        existing_order =  await self.order_collection.find_one({"order_id": order_data.order_id})
-        if existing_order:
-            return {
-                "error": "Order ID already exists",
-                "status_code": 404
-            }
-    
         order_dict = order_data.dict()
+        order_dict["uuid"] = str(uuid.uuid4())
         self.order_collection.insert_one(order_dict)
         return order_dict
 
