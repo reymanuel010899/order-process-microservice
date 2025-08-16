@@ -7,7 +7,7 @@ class OrderService:
         self.order_collection = orders_collection
 
     async def create_order(self, order_data: dict):
-        if  len(order_data['items']) <= 0:
+        if  len(order_data.items) == 0:
              return {
                 'error': 'items not found',
                 'status_code': 404
