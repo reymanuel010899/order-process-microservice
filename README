@@ -2,6 +2,8 @@
 
 ## 🚀 Run the Project in FastApi
 ```
+    clone the repository or unzip the file => git clone https://github.com/reymanuel010899/order-process-microservice.git
+
     cd order-process-microservice
     python3 -m venv venv 
     source venv/bin/activate
